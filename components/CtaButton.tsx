@@ -8,7 +8,7 @@ const CtaButton = ({
 }: {
   onPress: () => void;
   title: string;
-  isLoading: boolean;
+  isLoading?: boolean;
 }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>

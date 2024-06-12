@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 
-import { StyleSheet, View, Text, Alert, Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -24,8 +24,8 @@ const schema = z.object({
 });
 
 const defaultValues = {
-  email: "",
-  password: "",
+  email: "testa@email.com",
+  password: "123456789",
 };
 
 export default function Login() {
@@ -41,18 +41,14 @@ export default function Login() {
   });
 
   const onSubmit = async ({ email, password }: typeof defaultValues) => {
-    try {
-      const data = await login(email, password);
-      const isLoginSucesfull = !data?.error;
-
-      if (isLoginSucesfull) {
-        router.replace("/otp");
-      }
-    } catch (error) {
-      Alert.alert("Error", error?.data?.message, [
-        { text: "OK", onPress: () => {} },
-      ]);
+    const { data } = await login(email, password);
+    if (!data?.otp_id) {
+      return;
     }
+    router.replace({
+      pathname: "/otp",
+      params: { otp_id: String(data?.otp_id) },
+    });
   };
 
   return (

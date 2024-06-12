@@ -8,7 +8,11 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { session } = useAuthContext();
+  const { session, isLoading } = useAuthContext();
+
+  if (isLoading) {
+    return null;
+  }
 
   if (!session) {
     return <Redirect href="/login" />;

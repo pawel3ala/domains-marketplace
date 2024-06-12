@@ -1,4 +1,3 @@
-// Need to use the React-specific entry point to allow generating React hooks
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -15,20 +14,23 @@ export const appApi = createApi({
   ,}),
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (credentials) => ({
+      query: (body) => ({
         url: 'login',
         method: 'POST',
-        body: credentials,
+        body,
       }),
     }),
     TwoFactorAuthenticationLogin: builder.mutation({
-      query: (credentials) => ({
+      query: (body) => ({
         url: 'login/2fa',
         method: 'POST',
-        body: credentials,
+        body,
       }),
     })
   }),
 })
 
-export const { useLoginMutation } = appApi;
+export const { 
+  useLoginMutation, 
+  useTwoFactorAuthenticationLoginMutation
+ } = appApi;
