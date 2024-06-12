@@ -3,7 +3,29 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
-interface DomainInfo {
+
+export interface PaginationLinks {
+  next?: string; // Optional because the last page may not have a 'next' link
+  prev?: string; // Optional to handle previous page link if needed
+}
+
+export interface PaginationMeta {
+  total: number;
+  count: number;
+  per_page: number;
+  current_page: number;
+  total_pages: number;
+  links: PaginationLinks;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    pagination: PaginationMeta;
+  };
+}
+
+export interface DomainInfo {
   id: number; 
   domain: string; 
   exists_since: string; 
@@ -11,7 +33,6 @@ interface DomainInfo {
   ending_date: string; 
   status: "ACTIVE" | "INACTIVE" | "EXPIRED";
 }
-
 
 export const appApi = createApi({
   reducerPath: 'appApi',
@@ -40,12 +61,12 @@ export const appApi = createApi({
         body,
       }),
     }),
-    getDomains: builder.query({
-      query: () => ({
-        url: 'domains',
+    getDomains: builder.query<PaginatedResponse<DomainInfo>, number>({
+      query: (page = 1) => ({
+        url: `domains?page=${page}`,
         method: 'GET',
       }),
-    })
+    }),
   }),
 })
 

@@ -1,64 +1,84 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import {
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  View,
+  TouchableOpacity,
+} from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { useGetDomainsQuery } from "@/services/api";
+import { DomainInfo } from "@/services/api";
+import React, { useCallback, useEffect, useState } from "react";
+import DomainCard from "@/components/DomainCard";
+import { usePaginatedDomains } from "@/hooks/usePaginatedDomains";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
-  const { data } = useGetDomainsQuery();
+  const { domains, pagination, isLoading, nextPage, currentPage } =
+    usePaginatedDomains();
+  const [allDomains, setAllDomains] = useState<DomainInfo[]>([]);
 
-  console.log(data);
+  // Load initial data
+  useEffect(() => {
+    if (domains.length > 0) {
+      setAllDomains(domains);
+    }
+  }, [domains]);
+
+  // Fetch next page data
+  const fetchMoreData = useCallback(() => {
+    if (pagination?.links.next) {
+      nextPage();
+    }
+  }, [pagination, nextPage]);
+
+  // Append new domains to the existing list
+  useEffect(() => {
+    if (currentPage > 1 && domains.length > 0) {
+      setAllDomains((prevDomains) => [...prevDomains, ...domains]);
+    }
+  }, [domains, currentPage]);
+
+  const renderItem = ({ item, index }) => {
+    console.log("index", index);
+
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          router.push(`/domain`);
+        }}
+      >
+        <DomainCard name={item.domain} />
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welddcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit{" "}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-          to see changes. Press{" "}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
-          </ThemedText>{" "}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this
-          starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{" "}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText>{" "}
-          to get a fresh <ThemedText type="defaultSemiBold">app</ThemedText>{" "}
-          directory. This will move the current{" "}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <FlatList
+        style={{ width: "100%" }}
+        contentContainerStyle={{ gap: 20 }}
+        keyExtractor={(item, index) => `${item.id.toString()}_${index}`}
+        data={allDomains}
+        renderItem={renderItem}
+        // onEndReached={fetchMoreData}
+        // onEndReachedThreshold={0.9}
+        ListFooterComponent={
+          pagination?.links.next && isLoading ? (
+            <ActivityIndicator size="small" />
+          ) : null
+        }
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 16,
+  },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
