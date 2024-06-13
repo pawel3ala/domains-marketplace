@@ -17,21 +17,19 @@ export default function HomeScreen() {
     usePaginatedDomains();
   const [allDomains, setAllDomains] = useState<DomainInfo[]>([]);
 
-  // Load initial data
   useEffect(() => {
     if (domains.length > 0) {
       setAllDomains(domains);
     }
-  }, [domains]);
+  }, []);
 
-  // Fetch next page data
   const fetchMoreData = useCallback(() => {
+    console.log("fetchMoreData", pagination?.links.next);
     if (pagination?.links.next) {
       nextPage();
     }
   }, [pagination, nextPage]);
 
-  // Append new domains to the existing list
   useEffect(() => {
     if (currentPage > 1 && domains.length > 0) {
       setAllDomains((prevDomains) => [...prevDomains, ...domains]);
@@ -39,15 +37,13 @@ export default function HomeScreen() {
   }, [domains, currentPage]);
 
   const renderItem = ({ item, index }) => {
-    console.log("index", index);
-
     return (
       <TouchableOpacity
         onPress={() => {
           router.push(`/domain`);
         }}
       >
-        <DomainCard name={item.domain} />
+        <DomainCard name={index} />
       </TouchableOpacity>
     );
   };
@@ -60,8 +56,8 @@ export default function HomeScreen() {
         keyExtractor={(item, index) => `${item.id.toString()}_${index}`}
         data={allDomains}
         renderItem={renderItem}
-        // onEndReached={fetchMoreData}
-        // onEndReachedThreshold={0.9}
+        onEndReached={fetchMoreData}
+        onEndReachedThreshold={0.9}
         ListFooterComponent={
           pagination?.links.next && isLoading ? (
             <ActivityIndicator size="small" />
