@@ -31,7 +31,13 @@ export interface DomainInfo {
   exists_since: string; 
   starting_date: string; 
   ending_date: string; 
-  status: "ACTIVE" | "INACTIVE" | "EXPIRED";
+  status: DomainStatus;
+}
+
+export enum DomainStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  EXPIRED = "EXPIRED",
 }
 
 export const appApi = createApi({
@@ -61,11 +67,20 @@ export const appApi = createApi({
         body,
       }),
     }),
-    getDomains: builder.query<PaginatedResponse<DomainInfo>, number>({
-      query: (page = 1) => ({
-        url: `domains?page=${page}`,
-        method: 'GET',
-      }),
+    getDomains: builder.query<PaginatedResponse<DomainInfo>, { page: number, status: DomainStatus, isFullResponseEnabled?: boolean }>({
+      query: ({page = 1, status = DomainStatus.ACTIVE, isFullResponseEnabled = true}) => {
+
+        const getPageParam = `page=${page}`;
+        const getStatusParam = `status=${status}`;
+        const getIsFullResponseParam = `full-response=${isFullResponseEnabled ? '1' : '0'}`;
+        const queryParams = [getPageParam, getStatusParam, getIsFullResponseParam].join('&');
+
+        return {
+          url: `domains?${queryParams}`,
+          method: 'GET',
+        }
+
+      },
     }),
   }),
 })

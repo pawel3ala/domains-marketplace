@@ -1,9 +1,9 @@
-import { useGetDomainsQuery } from '@/services/api';
+import { DomainStatus, useGetDomainsQuery } from '@/services/api';
 import { useState } from 'react';
 
-export const usePaginatedDomains = () => {
+export const usePaginatedDomains = (status: DomainStatus) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, error, isLoading } = useGetDomainsQuery(currentPage);
+  const { data, error, isLoading } = useGetDomainsQuery({page: currentPage, status});
 
   const domains = data?.data || [];
   const pagination = data?.meta.pagination;

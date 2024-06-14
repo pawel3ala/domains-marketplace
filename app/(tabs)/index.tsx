@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { DomainInfo } from "@/services/api";
+import { DomainInfo, DomainStatus } from "@/services/api";
 import React, { useCallback, useEffect, useState } from "react";
 import DomainCard from "@/components/DomainCard";
 import { usePaginatedDomains } from "@/hooks/usePaginatedDomains";
@@ -14,14 +14,14 @@ import { router } from "expo-router";
 
 export default function HomeScreen() {
   const { domains, pagination, isLoading, nextPage, currentPage } =
-    usePaginatedDomains();
+    usePaginatedDomains(DomainStatus.ACTIVE);
   const [allDomains, setAllDomains] = useState<DomainInfo[]>([]);
 
   useEffect(() => {
-    if (domains.length > 0) {
+    if (domains.length > 0 && currentPage == 1) {
       setAllDomains(domains);
     }
-  }, []);
+  }, [domains]);
 
   const fetchMoreData = useCallback(() => {
     console.log("fetchMoreData", pagination?.links.next);
