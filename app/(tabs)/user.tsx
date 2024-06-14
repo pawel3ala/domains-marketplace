@@ -8,7 +8,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
-export default function TabTwoScreen() {
+export default function User() {
   const { signOut } = useAuthContext();
 
   return (
