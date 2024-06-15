@@ -5,13 +5,19 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { useIsOnboarded } from "@/hooks/useIsOnboarded";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { session, isLoading } = useAuthContext();
+  const { isOnboarded, isLoading: isLoadingIsOnboarded } = useIsOnboarded();
 
-  if (isLoading) {
+  if (isLoading || isLoadingIsOnboarded) {
     return null;
+  }
+
+  if (!isOnboarded) {
+    return <Redirect href="/onboarding" />;
   }
 
   if (!session) {
