@@ -23,13 +23,12 @@ export const DomainList = ({
   const [allDomains, setAllDomains] = useState<DomainInfo[]>([]);
 
   useEffect(() => {
-    if (domains.length > 0 && currentPage == 1) {
+    if (domains.length > 0 && currentPage === 1) {
       setAllDomains(domains);
     }
   }, [domains]);
 
   const fetchMoreData = useCallback(() => {
-    console.log("fetchMoreData", pagination?.links.next);
     if (pagination?.links.next) {
       nextPage();
     }
@@ -65,7 +64,7 @@ export const DomainList = ({
         onEndReachedThreshold={0.9}
         ListFooterComponent={
           pagination?.links.next && isLoading ? (
-            <ActivityIndicator size="small" />
+            <ActivityIndicator size="large" />
           ) : null
         }
       />

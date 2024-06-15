@@ -31,7 +31,11 @@ export default function Otp() {
       <ThemedView style={styles.container}>
         <Image source={require("@/assets/images/logo.png")} />
         <ThemedText style={{ fontSize: 18, fontWeight: "bold" }}>
-          Sign in to your account
+          Verify your account
+        </ThemedText>
+        <ThemedText style={{ fontSize: 14, fontWeight: "500" }}>
+          An OTP has been sent to your phone number +96650******** to verify
+          your login:
         </ThemedText>
         <OTPTextInput ref={otpInput} handleTextChange={setOtp} />
         <CtaButton title={"Verify"} onPress={onPress} isLoading={isLoading} />

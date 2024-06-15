@@ -1,42 +1,24 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet, Image, Platform, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import CtaButton from "@/components/CtaButton";
 
 export default function User() {
-  const { signOut } = useAuthContext();
+  const { signOut, isLoading } = useAuthContext();
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-      headerImage={
-        <Ionicons size={310} name="code-slash" style={styles.headerImage} />
-      }
-    >
-      <Button
-        title="Logout"
-        onPress={() => {
-          signOut();
-        }}
-      />
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <CtaButton title={"Logout"} onPress={signOut} isLoading={isLoading} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
   },
 });

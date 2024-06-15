@@ -77,6 +77,9 @@ export default function Login() {
             isError={errors.password?.message != null}
             style={styles.textInput}
           />
+          {errors.password?.message != null && (
+            <Text>{errors.password.message}</Text>
+          )}
         </View>
         <CtaButton
           title={"Login"}

@@ -42,7 +42,16 @@ export default function RootLayout() {
             screenOptions={{
               headerShown: false,
             }}
-          />
+          >
+            <Stack.Screen
+              name="domain"
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitle: "Back",
+              }}
+            />
+          </Stack>
         </ThemeProvider>
       </AuthContextProvider>
     </ApiProvider>
