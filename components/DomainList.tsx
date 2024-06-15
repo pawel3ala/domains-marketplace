@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   View,
   TouchableOpacity,
+  ListRenderItem,
 } from "react-native";
 
 import { DomainInfo, DomainStatus } from "@/services/api";
@@ -40,14 +41,14 @@ export const DomainList = ({
     }
   }, [domains, currentPage]);
 
-  const renderItem = ({ item, index }) => {
+  const renderItem: ListRenderItem<DomainInfo> = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
           router.push(`/domain`);
         }}
       >
-        <DomainCard name={index} />
+        <DomainCard {...item} />
       </TouchableOpacity>
     );
   };
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 16,
+    paddingTop: 16,
   },
   titleContainer: {
     flexDirection: "row",
