@@ -36,8 +36,8 @@ export interface DomainInfo {
 
 export enum DomainStatus {
   ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
-  EXPIRED = "EXPIRED",
+  CLOSED = "CLOSED",
+  UPCOMING = "UPCOMING",
 }
 
 export const appApi = createApi({

@@ -20,7 +20,7 @@ export default function TabLayout() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
       <MaterialTopTabs>
-        <MaterialTopTabs.Screen name="active" options={{ title: "Active" }} />
+        <MaterialTopTabs.Screen name="index" options={{ title: "Active" }} />
         <MaterialTopTabs.Screen
           name="upcoming"
           options={{ title: "Upcoming" }}

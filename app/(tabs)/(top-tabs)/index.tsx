@@ -3,7 +3,7 @@ import { DomainList } from "@/components/DomainList";
 import { DomainStatus } from "@/services/api";
 
 const HomeScreen = () => {
-  return <DomainList domainStatus={DomainStatus.CLOSED} />;
+  return <DomainList domainStatus={DomainStatus.ACTIVE} />;
 };
 
 export default HomeScreen;

@@ -10,11 +10,15 @@ import { DomainInfo, DomainStatus } from "@/services/api";
 import React, { useCallback, useEffect, useState } from "react";
 import DomainCard from "@/components/DomainCard";
 import { usePaginatedDomains } from "@/hooks/usePaginatedDomains";
-import { Link, Stack, Tabs, router } from "expo-router";
+import { router } from "expo-router";
 
-export default function HomeScreen() {
+export const DomainList = ({
+  domainStatus,
+}: {
+  domainStatus: DomainStatus;
+}) => {
   const { domains, pagination, isLoading, nextPage, currentPage } =
-    usePaginatedDomains(DomainStatus.ACTIVE);
+    usePaginatedDomains(domainStatus);
   const [allDomains, setAllDomains] = useState<DomainInfo[]>([]);
 
   useEffect(() => {
@@ -66,7 +70,7 @@ export default function HomeScreen() {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
