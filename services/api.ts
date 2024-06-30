@@ -3,6 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
+export type Nullable<T> = T | null;
+
 export interface PaginationLinks {
   next?: string;
   prev?: string; 
@@ -32,6 +34,7 @@ interface ActiveDomain {
   ending_date: string;
   status: DomainStatus;
   latest_bid_amount: number;
+  substatus: never;
 }
 
 interface ClosedDomain {
@@ -41,6 +44,8 @@ interface ClosedDomain {
   status: DomainStatus;
   latest_bid_amount: number;
   substatus: DomainSubStatus
+  starting_date: never;
+  ending_date: never;
 }
 
 interface UpcomingDomain {
@@ -50,6 +55,8 @@ interface UpcomingDomain {
   starting_date: string;
   ending_date: string;
   status: DomainStatus;
+  substatus: never;
+  latest_bid_amount: never
 }
 
 export type DomainInfo = ActiveDomain | ClosedDomain | UpcomingDomain;
