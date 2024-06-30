@@ -79,11 +79,9 @@ export default function Domain() {
           value={bid?.toString()}
           onChangeText={(text) => setBid(parseInt(text) || 0)}
         />
-        <CtaButton
-          title="Place Bid"
-          onPress={onPlaceBid}
-          style={{ width: undefined }}
-        />
+        <View>
+          <CtaButton title="Place Bid" onPress={onPlaceBid} />
+        </View>
       </View>
 
       <View style={styles.purpleContainer}>
