@@ -2,9 +2,22 @@ import Counter from "@/components/Counter";
 import CtaButton from "@/components/CtaButton";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  ListRenderItem,
+} from "react-native";
 
-const data = [
+interface ItemType {
+  name: string;
+  amount: string;
+  time: string;
+}
+
+const data: ItemType[] = [
   { name: "Foo Bar", amount: "SAR 500", time: "2 minutes ago" },
   { name: "Joe Doe", amount: "SAR 450", time: "10 minutes ago" },
   { name: "John Will", amount: "SAR 400", time: "2024-03-28 10:25 AM" },
@@ -17,7 +30,7 @@ const data = [
 export default function Domain() {
   const navigation = useNavigation();
   const { domain, ending_date, latest_bid_amount } = useLocalSearchParams();
-  const [bid, setBid] = useState(parseInt(latest_bid_amount) + 100); // TODO: null check
+  const [bid, setBid] = useState<number>(parseInt(latest_bid_amount) + 100); // TODO: null check
 
   useEffect(() => {
     navigation.setOptions({
@@ -29,13 +42,27 @@ export default function Domain() {
     console.log("Place Bid");
   };
 
+  const renderItem: ListRenderItem<ItemType> = ({ item, index }) => (
+    <View
+      style={[
+        styles.itemContainer,
+        {
+          backgroundColor: index % 2 ? "#f2f2f2" : "#E6E6E6",
+        },
+      ]}
+    >
+      <Text style={styles.firstColumn}>{item.name}</Text>
+      <Text style={styles.secondColumn}>{item.amount}</Text>
+      <Text style={styles.thirdColumn}>{item.time}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.purpleContainer}>
         <Text style={styles.purpleContainerText}>Time Left</Text>
       </View>
       <Counter ending_date={ending_date} />
-
       <View style={styles.purpleContainer}>
         <Text style={styles.purpleContainerText}>Current Bid</Text>
       </View>
@@ -49,8 +76,8 @@ export default function Domain() {
         <TextInput
           style={styles.textInput}
           placeholder="Enter your bid"
-          value={bid.toString()}
-          onChangeText={(text) => setBid(parseInt(text))}
+          value={bid?.toString()}
+          onChangeText={(text) => setBid(parseInt(text) || 0)}
         />
         <CtaButton
           title="Place Bid"
@@ -66,20 +93,7 @@ export default function Domain() {
         style={{ marginTop: 10 }}
         contentContainerStyle={{ gap: 10 }}
         data={data}
-        renderItem={({ item, index }) => (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              backgroundColor: index % 2 ? "#f2f2f2" : "#E6E6E6",
-              padding: 10,
-            }}
-          >
-            <Text style={styles.firstColumn}>{item.name}</Text>
-            <Text style={styles.secondColumn}>{item.amount}</Text>
-            <Text style={styles.thirdColumn}>{item.time}</Text>
-          </View>
-        )}
+        renderItem={renderItem}
         keyExtractor={(item, index) => `${index}${item.name}`}
       />
     </View>
@@ -91,6 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#fff",
+    gap: 15,
   },
   title: {
     fontSize: 20,
@@ -117,5 +132,10 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#f2f2f2",
     flex: 1,
+  },
+  itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
   },
 });

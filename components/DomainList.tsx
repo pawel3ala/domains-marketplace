@@ -3,7 +3,6 @@ import {
   FlatList,
   ActivityIndicator,
   View,
-  TouchableOpacity,
   ListRenderItem,
 } from "react-native";
 
@@ -11,7 +10,6 @@ import { DomainInfo, DomainStatus } from "@/services/api";
 import React, { useCallback, useEffect, useState } from "react";
 import DomainCard from "@/components/DomainCard";
 import { usePaginatedDomains } from "@/hooks/usePaginatedDomains";
-import { router } from "expo-router";
 
 export const DomainList = ({
   domainStatus,
@@ -69,8 +67,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 16,
     paddingTop: 16,
+    backgroundColor: "white",
   },
   titleContainer: {
     flexDirection: "row",
