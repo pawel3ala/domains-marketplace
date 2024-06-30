@@ -1,23 +1,23 @@
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, ViewStyle } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 
 const CtaButton = ({
   onPress,
   title,
   isLoading,
+  style,
 }: {
   onPress: () => void;
   title: string;
   isLoading?: boolean;
+  style?: ViewStyle;
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       {isLoading ? (
         <ActivityIndicator animating={isLoading} color="white" />
       ) : (
-        <Text style={{ color: "white", fontWeight: "bold", fontSize: 18 }}>
-          {title}
-        </Text>
+        <Text style={styles.text}>{title}</Text>
       )}
     </TouchableOpacity>
   );
@@ -32,12 +32,15 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#00A76F",
     width: "100%",
+    padding: 10,
   },
   link: {
     marginTop: 15,
     paddingVertical: 15,
   },
-  textInput: {
-    marginBottom: 10,
+  text: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });

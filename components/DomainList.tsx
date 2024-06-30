@@ -41,15 +41,7 @@ export const DomainList = ({
   }, [domains, currentPage]);
 
   const renderItem: ListRenderItem<DomainInfo> = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          router.push(`/domain`);
-        }}
-      >
-        <DomainCard {...item} />
-      </TouchableOpacity>
-    );
+    return <DomainCard {...item} />;
   };
 
   return (

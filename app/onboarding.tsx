@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -86,10 +86,10 @@ const Onboarding = () => {
     );
   }, []);
 
-  const onPress = () => {
+  const onPress = useCallback(() => {
     setIsOnboarded();
     router.replace("/login");
-  };
+  }, []);
 
   return (
     <View style={styles.container}>
